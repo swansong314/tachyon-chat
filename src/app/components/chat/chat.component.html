@@ -8,46 +8,39 @@
   <mat-drawer-container class="drawer-container" [autosize]="false">
     <mat-drawer class="drawer" mode="side" opened>
       <mat-selection-list #shoes [multiple]="false">
-        <mat-list-option> Room 1 </mat-list-option>
-        <mat-list-option> Room 2 </mat-list-option>
-        <mat-list-option> Room 3 </mat-list-option>
+        <mat-list-option
+          *ngFor="let room of rooms"
+          (click)="joinRoom(room.roomName)"
+        >
+          {{ room.roomName }}
+        </mat-list-option>
       </mat-selection-list>
     </mat-drawer>
     <mat-drawer-content class="drawer-content">
       <!-- <div id="stars"></div> -->
       <div class="chat-window">
-        <mat-card class="chat-message" *ngFor="let text of texts">{{
-          text
-        }}</mat-card>
         <mat-card
-          class="chat-message chat-message-receive"
-          *ngFor="let text of texts"
-          >{{ text }}</mat-card
-        >
-        <mat-card
-          class="chat-message chat-message-receive"
-          *ngFor="let text of texts"
-          >{{ text }}</mat-card
-        >
-        <mat-card
-          class="chat-message chat-message-receive"
-          *ngFor="let text of texts"
-          >{{ text }}</mat-card
+          *ngFor="let message of messages"
+          class="chat-message {{
+            message.sender === username ? 'chat-message-send' : ''
+          }}"
+          >{{ message.text }}</mat-card
         >
       </div>
-      <form class="message-box">
+      <div class="message-box">
         <mat-form-field appearance="outline" color="accent">
           <mat-label>Type your message here</mat-label>
           <input
             class="text-box"
             matInput
             placeholder="Ask your friends how they're doing?"
+            [(ngModel)]="text"
           />
-          <button mat-icon-button matSuffix>
+          <button mat-icon-button matSuffix (click)="sendMessage()">
             <mat-icon color="accent">send</mat-icon>
           </button>
         </mat-form-field>
-      </form>
+      </div>
     </mat-drawer-content>
   </mat-drawer-container>
 </mat-card>

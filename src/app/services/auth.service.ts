@@ -14,7 +14,7 @@ const httpOptions = {
 export class AuthService {
   private registerUrl = 'http://localhost:8080/api/register';
   private loginUrl = 'http://localhost:8080/api/login';
-
+  username!: String;
   constructor(private http: HttpClient) {}
 
   registerUser(user: UserType) {
@@ -22,6 +22,7 @@ export class AuthService {
   }
 
   loginUser(user: UserType) {
+    this.username = user.username;
     return this.http.post<any>(this.loginUrl, user);
   }
 
