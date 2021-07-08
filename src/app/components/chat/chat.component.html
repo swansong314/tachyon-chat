@@ -1,0 +1,53 @@
+<mat-card class="container" @grow>
+  <mat-card-header>
+    <mat-card-title>Tachyon Chat</mat-card-title>
+    <mat-card-subtitle
+      >Click on any of the rooms to start chatting in them</mat-card-subtitle
+    >
+  </mat-card-header>
+  <mat-drawer-container class="drawer-container" [autosize]="false">
+    <mat-drawer class="drawer" mode="side" opened>
+      <mat-selection-list #shoes [multiple]="false">
+        <mat-list-option> Room 1 </mat-list-option>
+        <mat-list-option> Room 2 </mat-list-option>
+        <mat-list-option> Room 3 </mat-list-option>
+      </mat-selection-list>
+    </mat-drawer>
+    <mat-drawer-content class="drawer-content">
+      <!-- <div id="stars"></div> -->
+      <div class="chat-window">
+        <mat-card class="chat-message" *ngFor="let text of texts">{{
+          text
+        }}</mat-card>
+        <mat-card
+          class="chat-message chat-message-receive"
+          *ngFor="let text of texts"
+          >{{ text }}</mat-card
+        >
+        <mat-card
+          class="chat-message chat-message-receive"
+          *ngFor="let text of texts"
+          >{{ text }}</mat-card
+        >
+        <mat-card
+          class="chat-message chat-message-receive"
+          *ngFor="let text of texts"
+          >{{ text }}</mat-card
+        >
+      </div>
+      <form class="message-box">
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>Type your message here</mat-label>
+          <input
+            class="text-box"
+            matInput
+            placeholder="Ask your friends how they're doing?"
+          />
+          <button mat-icon-button matSuffix>
+            <mat-icon color="accent">send</mat-icon>
+          </button>
+        </mat-form-field>
+      </form>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</mat-card>

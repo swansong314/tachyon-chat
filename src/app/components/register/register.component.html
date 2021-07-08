@@ -1,0 +1,47 @@
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Tachyon Chat</mat-card-title>
+      <mat-card-subtitle @slide>Register</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Username</mat-label>
+          <input matInput placeholder="Username" [(ngModel)]="username" />
+          <mat-hint
+            >This will be displayed as your name while chatting</mat-hint
+          >
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            placeholder="Password"
+            [(ngModel)]="password"
+          />
+          <button mat-icon-button matSuffix (click)="hide = !hide">
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+        </mat-form-field>
+      </p>
+    </mat-card-content>
+    <mat-card-actions @fade>
+      <div class="flex-question">
+        <p>Already registered?</p>
+        <a routerLink="/login">Click here to login</a>
+      </div>
+      <button
+        class="submit-button"
+        mat-raised-button
+        color="accent"
+        (click)="registerUser()"
+      >
+        Register
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
