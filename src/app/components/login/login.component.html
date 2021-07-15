@@ -1,4 +1,4 @@
-<div class="container" @fade>
+<div class="container" [@exit]="isInFrame ? 'inFrame' : 'notInFrame'">
   <mat-card>
     <mat-card-header>
       <mat-card-title>Tachyon Chat</mat-card-title>

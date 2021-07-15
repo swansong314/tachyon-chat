@@ -20,6 +20,7 @@
     "@angular/platform-browser": "~12.0.3",
     "@angular/platform-browser-dynamic": "~12.0.3",
     "@angular/router": "~12.0.3",
+    "@ctrl/ngx-emoji-mart": "^6.0.0",
     "compass-mixins": "^0.12.10",
     "rxjs": "~6.6.0",
     "socket.io-client": "^4.1.2",
