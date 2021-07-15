@@ -4,7 +4,7 @@ const cors = require('cors');
 const connect = require('./models/dbconnect');
 const api = require('./routes/api');
 const http = require('http');
-
+const { usersOnline, addUser, getUsers, removeUser } = require('./users');
 const PORT = process.env.PORT || 8080;
 
 const app = express();
@@ -28,13 +28,42 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
+io.use((socket, next) => {
+  const username = socket.handshake.auth.username;
+  if (!username) {
+    return next(new Error('invalid username'));
+  }
+  socket.username = username;
+  // console.log(socket);
+  next();
+});
+
 io.on('connection', (socket) => {
-  console.log('User connected');
+  socket.on('newUser', (user) => {
+    // let newUser = { userID: socket.id, username: user.username };
+    // addUser(newUser);
+    // console.log(usersOnline);
+    console.log(user);
+    const users = [];
+    for (let [id, socket] of io.of('/').sockets) {
+      users.push({
+        userID: id,
+        username: socket.username,
+      });
+    }
+    console.log(users);
+    io.emit('updateUserList', users);
+  });
+
   socket.on('joinRoom', (room) => {
-    console.log('Joined General Room ');
+    // console.log('Joined General Room ');
     socket.join(room);
+    W;
+    console.log(socket.rooms);
     // io.to(room).emit('welcomeMessage', 'Welcome to ' + room);
+
     socket.on('message', (message) => {
+      console.log(socket.rooms);
       console.log(message);
       let newMessage = new Chat({
         text: message.text,
@@ -47,6 +76,30 @@ io.on('connection', (socket) => {
       });
       socket.to(room).emit('messageBroadcast', message);
     });
+
+    socket.on('leaveRoom', (room) => {
+      socket.leave(room);
+      socket.removeAllListeners('message');
+    });
+  });
+
+  socket.on('privateMessage', ({ content, to }) => {
+    console.log(content);
+    console.log(to);
+    socket.to(to).emit('privateMessage', content);
+  });
+
+  socket.on('disconnect', () => {
+    const users = [];
+    for (let [id, socket] of io.of('/').sockets) {
+      users.push({
+        userID: id,
+        username: socket.username,
+      });
+    }
+    console.log(users);
+    io.emit('updateUserList', users);
+    console.log('User disconnected');
   });
 });
 
