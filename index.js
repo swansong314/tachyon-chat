@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/api', api);
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 const server = http.createServer(app);
 
@@ -27,9 +27,6 @@ const io = new Server(server, {
 //set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
 
 io.use((socket, next) => {
   const username = socket.handshake.auth.username;
