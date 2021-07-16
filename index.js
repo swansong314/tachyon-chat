@@ -5,6 +5,9 @@ const connect = require('./models/dbconnect');
 const api = require('./routes/api');
 const http = require('http');
 const { usersOnline, addUser, getUsers, removeUser } = require('./users');
+
+//set static folder
+app.use(express.static(path.join(__dirname, 'public')));
 const PORT = process.env.PORT || 8080;
 
 const app = express();
@@ -24,8 +27,6 @@ const io = new Server(server, {
   },
 });
 
-//set static folder
-app.use(express.static(path.join(__dirname, 'public')));
 
 
 io.use((socket, next) => {
