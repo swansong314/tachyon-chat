@@ -57,6 +57,16 @@ mat-card-header {
   flex-direction: column;
   box-sizing: border-box;
 }
+.chat-window .chat-messages {
+  overflow-y: scroll;
+  overflow-x: visible;
+  height: 500px;
+  border-bottom: 1px solid gray;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
 
 .chat-message {
   padding: 7px;
@@ -99,4 +109,21 @@ mat-card-header {
 .dropdown-menu mat-expansion-panel {
   max-width: 150px;
   background-color: #2a313e;
+}
+
+.wrapper {
+  margin-top: 1%;
+  margin-left: 2%;
+}
+.wrapper h1 {
+  // margin-top: 10%;
+  font-size: 3rem;
+  font-weight: 900;
+}
+
+.wrapper p {
+  // margin-left: 10%;
+  // padding-left: 10%;
+  padding: 0px;
+  margin: 0px;
 }

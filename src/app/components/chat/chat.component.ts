@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { fade, grow, slide } from 'src/app/animations/animations';
 import { MessagingService } from 'src/app/services/messaging.service';
@@ -13,6 +13,7 @@ import { RoomType } from 'src/Room';
   animations: [grow],
 })
 export class ChatComponent implements OnInit {
+  active: boolean = false;
   hidePicker: boolean = true;
   socket!: any;
   messages: MessageType[] = [];
@@ -49,7 +50,6 @@ export class ChatComponent implements OnInit {
     });
     this.messagingService.newUser.subscribe((userList: any) => {
       this.userList = userList;
-      console.log(userList);
     });
     this.messagingService.newPrivateMessages.subscribe(
       (privateMessage: any) => {
@@ -84,15 +84,20 @@ export class ChatComponent implements OnInit {
   }
 
   joinPrivateRoom(user: any) {
+    this.active = true;
     this.isPrivate = true;
     this.toUser = user;
+    this.messagingService.joinPrivateRoom(user);
+    // console.log(this.toUser);
     this.messagingService.getPrivateMessages(user).subscribe((messages) => {
       this.messages = messages;
+      console.log(this.messages);
     });
     // this.messages = [];
   }
 
   joinRoom(room: any) {
+    this.active = true;
     this.isPrivate = false;
     this.messagingService.joinRoom(room);
     this.messagingService.getMessages(room).subscribe((messages) => {
@@ -104,8 +109,14 @@ export class ChatComponent implements OnInit {
     this.hidePicker = !this.hidePicker;
   }
 
+  addEmoji(event: any) {
+    const newText = `${this.text}${event.emoji.native}`;
+    this.text = newText;
+  }
+
   logoutUser() {
-    localStorage.removeItem('token');
+    // localStorage.removeItem('token');
+    sessionStorage.clear();
     this.router.navigate(['/login']);
   }
 }

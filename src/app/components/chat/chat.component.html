@@ -11,6 +11,7 @@
   emoji=""
   title=""
   [showPreview]="false"
+  (emojiSelect)="addEmoji($event)"
 ></emoji-mart>
 
 <mat-card class="container" @grow>
@@ -69,15 +70,24 @@
     <mat-drawer-content class="drawer-content">
       <!-- <div id="stars"></div> -->
       <div class="chat-window">
-        <mat-card
-          *ngFor="let message of messages"
-          class="chat-message {{
-            user.username == message.sender ? 'chat-message-send' : ''
-          }}"
-        >
-          <mat-card-subtitle>{{ message.sender }} </mat-card-subtitle>
-          {{ message.text }}</mat-card
-        >
+        <div class="wrapper" *ngIf="!active">
+          <h1>Welcome.</h1>
+          <p>
+            Click on any of the Rooms to the side to start chatting in a room.
+          </p>
+          <p>Or chat with any online users using the Users tab.</p>
+        </div>
+        <div class="chat-messages" *ngIf="active">
+          <mat-card
+            *ngFor="let message of messages"
+            class="chat-message {{
+              user.username == message.sender ? 'chat-message-send' : ''
+            }}"
+          >
+            <mat-card-subtitle>{{ message.sender }} </mat-card-subtitle>
+            {{ message.text }}</mat-card
+          >
+        </div>
       </div>
       <div class="message-box">
         <mat-form-field appearance="outline" color="accent">

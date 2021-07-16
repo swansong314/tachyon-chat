@@ -6,6 +6,7 @@ import { MessageType } from 'src/MessageType';
 import { AuthService } from './auth.service';
 import { RoomType } from 'src/Room';
 import { observable, Observable, Observer, of } from 'rxjs';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -25,6 +26,7 @@ export class MessagingService {
   socket: any = io(this.socketUrl, { autoConnect: false });
   currentRoom!: String;
   currentUser: any = { username: '', userID: '' };
+  toUser: any = { username: '', userID: '' };
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   establishSocketConnection() {
@@ -36,8 +38,8 @@ export class MessagingService {
       console.log(eventName);
     });
     this.socket.connect();
-    this.currentUser.username = username;
     this.socket.emit('newUser', { username });
+    this.currentUser.username = username;
   }
 
   sendMessage(message: MessageType) {
@@ -50,12 +52,16 @@ export class MessagingService {
     this.socket.emit('joinRoom', room);
   }
 
+  joinPrivateRoom(user: any) {
+    this.toUser = user;
+  }
+
   newMessages = new Observable((observer) => {
     let message: MessageType;
     message = this.socket.on('messageBroadcast', (msg: MessageType) => {
       // console.log('received broadcast message as ', msg);
       //this is a fucntion to send messges to chat component
-      //TODO checkk for multipe transmission bug
+      //TODO checkk for multipe transmission bug - DONE
       observer.next(msg);
     });
     return {
@@ -74,9 +80,12 @@ export class MessagingService {
   }
 
   getPrivateMessages(fromUser: any) {
-    let currentUserID = this.currentUser.userID;
+    let currentUserID = this.currentUser.username;
+    let senderName = fromUser.username;
+    console.log(currentUserID);
+    console.log(senderName);
     return this.http.post<any>(this.privateChatApiUrl, {
-      fromUser,
+      senderName,
       currentUserID,
     });
   }
@@ -96,6 +105,8 @@ export class MessagingService {
   sendPrivateMessage(message: MessageType, user: any) {
     console.log(message);
     console.log(user);
+    message.room = user.username;
+    console.log(message);
     this.socket.emit('privateMessage', { content: message, to: user.userID });
   }
   //--------------------------------------------------------------------------//
@@ -107,7 +118,11 @@ export class MessagingService {
     let message: MessageType;
     message = this.socket.on('privateMessage', (message: any) => {
       console.log(message);
-      observer.next(message);
+      if (message.sender == this.toUser.username) {
+        if (message.room == this.currentUser.username) {
+          observer.next(message);
+        }
+      }
     });
     return {
       unsubscribe() {},
@@ -121,7 +136,7 @@ export class MessagingService {
   newUser = new Observable((observer) => {
     let user: any;
     user = this.socket.on('updateUserList', (userList: any) => {
-      // this.currentUser.userID = this.socket.id;
+      this.currentUser.userID = this.socket.id;
       userList.forEach((user: any) => {
         user.self = user.userID === this.socket.id;
         // this.socket.initReactiveProperties(user);
