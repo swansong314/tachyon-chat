@@ -1,0 +1,61 @@
+<div class="container" [@exit]="isInFrame ? 'inFrame' : 'notInFrame'">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Tachyon Chat</mat-card-title>
+      <mat-card-subtitle @slide>Login</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            placeholder="Username"
+            [(ngModel)]="username"
+            [formControl]="userControl"
+            required
+          />
+          <mat-hint
+            >This will be displayed as your name while chatting</mat-hint
+          >
+          <mat-error *ngIf="userControl.invalid">{{
+            getUsernameError()
+          }}</mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="fill" color="accent">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            placeholder="Password"
+            [(ngModel)]="password"
+            [formControl]="passwordControl"
+            required
+          />
+          <button mat-icon-button matSuffix (click)="hide = !hide">
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <mat-error *ngIf="passwordControl.invalid">
+            {{ getPasswordError() }}
+          </mat-error>
+        </mat-form-field>
+      </p>
+    </mat-card-content>
+    <mat-card-actions @fade>
+      <div class="flex-question">
+        <p>Don't have an account?</p>
+        <a routerLink="/register">Click here to register</a>
+      </div>
+      <button
+        class="submit-button"
+        mat-raised-button
+        color="accent"
+        (click)="loginUser()"
+      >
+        Login
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

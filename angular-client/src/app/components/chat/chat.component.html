@@ -1,0 +1,112 @@
+<emoji-mart
+  [hidden]="hidePicker"
+  [style]="{
+    position: 'absolute',
+    bottom: '72px',
+    right: '22%',
+    zIndex: 2,
+    backgroundColor: '#21262c'
+  }"
+  color="#5bd69a"
+  emoji=""
+  title=""
+  [showPreview]="false"
+  (emojiSelect)="addEmoji($event)"
+></emoji-mart>
+
+<mat-card class="container" @grow>
+  <mat-card-header>
+    <mat-card-title>Tachyon Chat</mat-card-title>
+    <mat-card-subtitle
+      >Click on any of the rooms to start chatting in them</mat-card-subtitle
+    >
+    <button
+      class="logout-button"
+      mat-icon-button
+      matSuffix
+      (click)="logoutUser()"
+    >
+      Logout
+      <mat-icon color="accent">power_settings_new</mat-icon>
+    </button>
+  </mat-card-header>
+  <mat-drawer-container class="drawer-container" [autosize]="false">
+    <mat-drawer class="drawer" mode="side" opened>
+      <mat-accordion class="dropdown-menu" multi>
+        <mat-expansion-panel [ngStyle]="{ padding: '0px' }">
+          <mat-expansion-panel-header>
+            <mat-panel-title> Rooms </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list
+            [multiple]="false"
+            dense
+            [ngStyle]="{ padding: '0px' }"
+          >
+            <mat-list-option
+              [ngStyle]="{ padding: '0px' }"
+              *ngFor="let room of rooms"
+              (click)="joinRoom(room.roomName)"
+            >
+              {{ room.roomName }}
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Users </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list [multiple]="false" dense>
+            <mat-list-option
+              *ngFor="let user of userList"
+              (click)="joinPrivateRoom(user)"
+            >
+              {{ user.username }}
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-drawer>
+
+    <mat-drawer-content class="drawer-content">
+      <!-- <div id="stars"></div> -->
+      <div class="chat-window">
+        <div class="wrapper" *ngIf="!active">
+          <h1>Welcome.</h1>
+          <p>
+            Click on any of the Rooms to the side to start chatting in a room.
+          </p>
+          <p>Or chat with any online users using the Users tab.</p>
+        </div>
+        <div class="chat-messages" *ngIf="active">
+          <mat-card
+            *ngFor="let message of messages"
+            class="chat-message {{
+              user.username == message.sender ? 'chat-message-send' : ''
+            }}"
+          >
+            <mat-card-subtitle>{{ message.sender }} </mat-card-subtitle>
+            {{ message.text }}</mat-card
+          >
+        </div>
+      </div>
+      <div class="message-box">
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>Type your message here</mat-label>
+          <input
+            class="text-box"
+            matInput
+            placeholder="Ask your friends how they're doing?"
+            [(ngModel)]="text"
+          />
+
+          <button mat-icon-button matSuffix (click)="showEmojiPicker()">
+            <mat-icon color="accent">insert_emoticon</mat-icon>
+          </button>
+          <button mat-icon-button matSuffix (click)="sendMessage()">
+            <mat-icon color="accent">send</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</mat-card>

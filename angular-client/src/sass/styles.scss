@@ -1,0 +1,131 @@
+// /* You can add global styles to this file, and also import other style files */
+// @import "./variables";
+// @import "./mixins";
+// @import "~compass-mixins/lib/compass/css3";
+* {
+  scrollbar-width: none;
+}
+
+@import "~@ctrl/ngx-emoji-mart/picker";
+// // n is number of stars required
+@function multiple-box-shadow($n) {
+  $value: "#{random(2000)}px #{random(2000)}px #FFF";
+  @for $i from 2 through $n {
+    $value: "#{$value} , #{random(2000)}px #{random(2000)}px #FFF";
+  }
+  @return unquote($value);
+}
+$shadows-small: multiple-box-shadow(1050);
+$shadows-medium: multiple-box-shadow(300);
+$shadows-big: multiple-box-shadow(150);
+
+html {
+  height: 100%;
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  overflow: hidden;
+}
+
+#stars {
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: $shadows-small;
+  animation: animStar 50s linear infinite;
+}
+
+#stars::after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: $shadows-small;
+}
+
+#stars2 {
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  box-shadow: $shadows-medium;
+  animation: animStar 100s linear infinite;
+}
+
+#stars2::after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  box-shadow: $shadows-medium;
+}
+
+#stars3 {
+  width: 3px;
+  height: 3px;
+  background: transparent;
+  box-shadow: $shadows-big;
+  animation: animStar 150s linear infinite;
+}
+
+#stars3::after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 3px;
+  height: 3px;
+  background: transparent;
+  box-shadow: $shadows-big;
+}
+
+#title {
+  position: absolute;
+
+  top: 5%;
+  left: 0;
+  right: 0;
+
+  //   //   color: #fff;
+  //   //   text-align: center;
+  //   //   font-family: "lato", sans-serif;
+  //   //   font-weight: 300;
+  //   //   font-size: 50px;
+  //   //   letter-spacing: 10px;
+
+  //   //   margin-top: -60px;
+  //   //   padding-left: 10px;
+  //   // }
+  //   // span {
+  //   //   background: -webkit-linear-gradient(white, #38495a);
+  //   //   -webkit-background-clip: text;
+  //   //   -webkit-text-fill-color: transparent;
+  //   //   background-clip: text;
+}
+
+@keyframes animStar {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-2000px);
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  scrollbar-width: none;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.mat-expansion-panel-body {
+  padding: 0px !important;
+}
