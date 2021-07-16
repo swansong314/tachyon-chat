@@ -30,13 +30,20 @@ router.get('/', (req, res) => {
 router.post('/register', (req, res) => {
   const userData = req.body;
   const user = new User(userData);
-  user.save((err, registeredUser) => {
-    if (err) {
-      console.error(err);
+  console.log(user);
+  Chat.find({ username: user.username }, (erorr, users) => {
+    if (user) {
+      res.status(409).send('User already exists!');
     } else {
-      const payload = { subject: registeredUser._id };
-      const token = jwt.sign(payload, 'VeryBigSecret');
-      res.status(200).send({ token });
+      user.save((err, registeredUser) => {
+        if (err) {
+          console.error(err);
+        } else {
+          const payload = { subject: registeredUser._id };
+          const token = jwt.sign(payload, 'VeryBigSecret');
+          res.status(200).send({ token });
+        }
+      });
     }
   });
 });
@@ -78,17 +85,25 @@ router.post('/chats', verifyToken, (req, res) => {
 
 router.post('/privatechats', verifyToken, (req, res) => {
   // res.json('Request for Chats');
-  const currentUser = req.body.currentUser;
-  const fromUser = req.body.fromUser;
-  console.log(currentUser, fromUser);
-  Chat.find({ sender: fromUser, room: currentUser }, (error, chats) => {
-    if (error) {
-      console.error(error);
-    } else {
-      res.status = 200;
-      res.json(chats);
+  console.log(req.body);
+  senderName = req.body.senderName;
+  currentUser = req.body.currentUserID;
+  Chat.find(
+    {
+      $or: [
+        { sender: senderName, room: currentUser },
+        { sender: currentUser, room: senderName },
+      ],
+    },
+    (error, chats) => {
+      if (error) {
+        console.error(error);
+      } else {
+        res.status = 200;
+        res.json(chats);
+      }
     }
-  });
+  );
 });
 
 router.get('/rooms', verifyToken, (req, res) => {

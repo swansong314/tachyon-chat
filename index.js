@@ -39,6 +39,14 @@ io.use((socket, next) => {
 });
 
 io.on('connection', (socket) => {
+  // fs.readFile('image.png', function (err, data) {
+  //   socket.emit('imageConversionByClient', { image: true, buffer: data });
+  //   socket.emit(
+  //     'imageConversionByServer',
+  //     'data:image/png;base64,' + data.toString('base64')
+  //   );
+  // });
+
   socket.on('newUser', (user) => {
     // let newUser = { userID: socket.id, username: user.username };
     // addUser(newUser);
@@ -58,7 +66,6 @@ io.on('connection', (socket) => {
   socket.on('joinRoom', (room) => {
     // console.log('Joined General Room ');
     socket.join(room);
-    W;
     console.log(socket.rooms);
     // io.to(room).emit('welcomeMessage', 'Welcome to ' + room);
 
@@ -86,6 +93,15 @@ io.on('connection', (socket) => {
   socket.on('privateMessage', ({ content, to }) => {
     console.log(content);
     console.log(to);
+    let newMessage = new Chat({
+      text: content.text,
+      sender: content.sender,
+      time: content.time,
+      room: content.room,
+    });
+    newMessage.save((error, message) => {
+      if (error) console.error(error);
+    });
     socket.to(to).emit('privateMessage', content);
   });
 
