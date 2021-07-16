@@ -22,6 +22,7 @@
     "@angular/router": "~12.0.3",
     "@ctrl/ngx-emoji-mart": "^6.0.0",
     "compass-mixins": "^0.12.10",
+    "multer": "^1.4.2",
     "rxjs": "~6.6.0",
     "socket.io-client": "^4.1.2",
     "tslib": "^2.1.0",
