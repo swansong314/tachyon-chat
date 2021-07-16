@@ -18,11 +18,16 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class MessagingService {
-  private socketUrl = 'http://localhost:8080';
-  private chatApiUrl = 'http://localhost:8080/api/chats';
-  private privateChatApiUrl = 'http://localhost:8080/api/privatechats';
-  private roomApiUrl = 'http://localhost:8080/api/rooms';
-  private usersApiUrl = 'http://localhost:8080/api/users';
+  private socketUrl = '/';
+  // private socketUrl = 'http://localhost:8080';
+  private chatApiUrl = '/api/chats';
+  // private chatApiUrl = 'http://localhost:8080/api/chats';
+  private privateChatApiUrl = '/api/privatechats';
+  // private privateChatApiUrl = 'http://localhost:8080/api/privatechats';
+  private roomApiUrl = '/api/rooms';
+  // private roomApiUrl = 'http://localhost:8080/api/rooms';
+  private usersApiUrl = '/api/users';
+  // private usersApiUrl = 'http://localhost:8080/api/users';
   socket: any = io(this.socketUrl, { autoConnect: false });
   currentRoom!: String;
   currentUser: any = { username: '', userID: '' };

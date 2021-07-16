@@ -12,8 +12,10 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class AuthService {
-  private registerUrl = 'http://localhost:8080/api/register';
-  private loginUrl = 'http://localhost:8080/api/login';
+  private registerUrl = '/api/register';
+  // private registerUrl = 'http://localhost:8080/api/register';
+  private loginUrl = '/api/login';
+  // private loginUrl = 'http://localhost:8080/api/login';
   username!: String;
   constructor(private http: HttpClient) {}
 
