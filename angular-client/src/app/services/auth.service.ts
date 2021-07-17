@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserType } from 'src/User';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -8,13 +9,15 @@ const httpOptions = {
   }),
 };
 
+const baseUrl = environment.apiUrl;
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private registerUrl = '/api/register';
+  private registerUrl = `${baseUrl}api/register`;
+  private loginUrl = `${baseUrl}api/login`;
   // private registerUrl = 'http://localhost:8080/api/register';
-  private loginUrl = '/api/login';
   // private loginUrl = 'http://localhost:8080/api/login';
   username!: String;
   constructor(private http: HttpClient) {}

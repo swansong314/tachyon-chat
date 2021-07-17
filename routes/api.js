@@ -30,7 +30,7 @@ router.get('/', (req, res) => {
 router.post('/register', (req, res) => {
   const userData = req.body;
   const user = new User(userData);
-  console.log(user);
+  //LOG console.log(user);
   Chat.find({ username: user.username }, (erorr, users) => {
     if (user) {
       res.status(409).send('User already exists!');
@@ -72,7 +72,7 @@ router.post('/login', (req, res) => {
 router.post('/chats', verifyToken, (req, res) => {
   // res.json('Request for Chats');
   const room = req.body.room;
-  console.log(room);
+  //LOG console.log(room);
   Chat.find({ room: room }, (error, chats) => {
     if (error) {
       console.error(error);
@@ -85,7 +85,7 @@ router.post('/chats', verifyToken, (req, res) => {
 
 router.post('/privatechats', verifyToken, (req, res) => {
   // res.json('Request for Chats');
-  console.log(req.body);
+  //LOG console.log(req.body);
   senderName = req.body.senderName;
   currentUser = req.body.currentUserID;
   Chat.find(

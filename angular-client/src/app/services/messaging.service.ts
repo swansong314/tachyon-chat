@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { RoomType } from 'src/Room';
 import { observable, Observable, Observer, of } from 'rxjs';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -14,19 +15,21 @@ const httpOptions = {
   }),
 };
 
+const baseUrl = environment.apiUrl;
+
 @Injectable({
   providedIn: 'root',
 })
 export class MessagingService {
-  private socketUrl = '/';
+  private socketUrl = baseUrl;
+  private chatApiUrl = `${baseUrl}api/chats`;
+  private privateChatApiUrl = `${baseUrl}api/privatechats`;
+  private roomApiUrl = `${baseUrl}api/rooms`;
   // private socketUrl = 'http://localhost:8080';
-  private chatApiUrl = '/api/chats';
   // private chatApiUrl = 'http://localhost:8080/api/chats';
-  private privateChatApiUrl = '/api/privatechats';
   // private privateChatApiUrl = 'http://localhost:8080/api/privatechats';
-  private roomApiUrl = '/api/rooms';
   // private roomApiUrl = 'http://localhost:8080/api/rooms';
-  private usersApiUrl = '/api/users';
+  // private usersApiUrl = '/api/users';
   // private usersApiUrl = 'http://localhost:8080/api/users';
   socket: any = io(this.socketUrl, { autoConnect: false });
   currentRoom!: String;
@@ -35,13 +38,13 @@ export class MessagingService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   establishSocketConnection() {
+    //LOG console.log(baseUrl);
     let username = this.auth.username;
     this.socket.auth = { username };
-    // console.log(username);
-    this.socket.onAny((eventName: any, ...args: any) => {
-      // ...
-      console.log(eventName);
-    });
+    //LOG console.log(username);
+    // this.socket.onAny((eventName: any, ...args: any) => {
+    //   console.log(eventName);
+    // });
     this.socket.connect();
     this.socket.emit('newUser', { username });
     this.currentUser.username = username;
@@ -64,7 +67,7 @@ export class MessagingService {
   newMessages = new Observable((observer) => {
     let message: MessageType;
     message = this.socket.on('messageBroadcast', (msg: MessageType) => {
-      // console.log('received broadcast message as ', msg);
+      //LOG console.log('received broadcast message as ', msg);
       //this is a fucntion to send messges to chat component
       //TODO checkk for multipe transmission bug - DONE
       observer.next(msg);
@@ -87,8 +90,8 @@ export class MessagingService {
   getPrivateMessages(fromUser: any) {
     let currentUserID = this.currentUser.username;
     let senderName = fromUser.username;
-    console.log(currentUserID);
-    console.log(senderName);
+    //LOG console.log(currentUserID);
+    //LOG console.log(senderName);
     return this.http.post<any>(this.privateChatApiUrl, {
       senderName,
       currentUserID,
@@ -108,10 +111,10 @@ export class MessagingService {
   //--------------------------------------------------------------------------//
   //sending a message to a particular user
   sendPrivateMessage(message: MessageType, user: any) {
-    console.log(message);
-    console.log(user);
+    //LOG console.log(message);
+    //LOG console.log(user);
     message.room = user.username;
-    console.log(message);
+    //LOG console.log(message);
     this.socket.emit('privateMessage', { content: message, to: user.userID });
   }
   //--------------------------------------------------------------------------//
@@ -122,7 +125,7 @@ export class MessagingService {
   newPrivateMessages = new Observable((observer) => {
     let message: MessageType;
     message = this.socket.on('privateMessage', (message: any) => {
-      console.log(message);
+      //LOG console.log(message);
       if (message.sender == this.toUser.username) {
         if (message.room == this.currentUser.username) {
           observer.next(message);

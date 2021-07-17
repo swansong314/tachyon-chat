@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
   canActivate(): boolean {
     if (this.auth.loggedIn()) return true;
     else {
-      // console.log('Guard here!');
+      //LOG console.log('Guard here!');
       //why does it not show source constrols anymore
       this.router.navigate(['/login']);
       return false;

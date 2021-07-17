@@ -4,13 +4,12 @@ const cors = require('cors');
 const connect = require('./models/dbconnect');
 const api = require('./routes/api');
 const http = require('http');
-const { usersOnline, addUser, getUsers, removeUser } = require('./users');
 
 //set static folder
-app.use(express.static(path.join(__dirname, 'public')));
 const PORT = process.env.PORT || 8080;
-
 const app = express();
+
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use(express.json());
 app.use('/api', api);
@@ -27,15 +26,13 @@ const io = new Server(server, {
   },
 });
 
-
-
 io.use((socket, next) => {
   const username = socket.handshake.auth.username;
   if (!username) {
     return next(new Error('invalid username'));
   }
   socket.username = username;
-  // console.log(socket);
+  //LOG console.log(socket);
   next();
 });
 
@@ -49,10 +46,7 @@ io.on('connection', (socket) => {
   // });
 
   socket.on('newUser', (user) => {
-    // let newUser = { userID: socket.id, username: user.username };
-    // addUser(newUser);
-    // console.log(usersOnline);
-    console.log(user);
+    //LOG console.log(user);
     const users = [];
     for (let [id, socket] of io.of('/').sockets) {
       users.push({
@@ -60,19 +54,18 @@ io.on('connection', (socket) => {
         username: socket.username,
       });
     }
-    console.log(users);
+    //LOG console.log(users);
     io.emit('updateUserList', users);
   });
 
   socket.on('joinRoom', (room) => {
     // console.log('Joined General Room ');
     socket.join(room);
-    console.log(socket.rooms);
-    // io.to(room).emit('welcomeMessage', 'Welcome to ' + room);
+    //LOG console.log(socket.rooms);
 
     socket.on('message', (message) => {
-      console.log(socket.rooms);
-      console.log(message);
+      //LOG console.log(socket.rooms);
+      //LOG console.log(message);
       let newMessage = new Chat({
         text: message.text,
         sender: message.sender,
@@ -92,8 +85,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on('privateMessage', ({ content, to }) => {
-    console.log(content);
-    console.log(to);
+    //LOG console.log(content);
+    //LOG console.log(to);
     let newMessage = new Chat({
       text: content.text,
       sender: content.sender,
@@ -114,7 +107,7 @@ io.on('connection', (socket) => {
         username: socket.username,
       });
     }
-    console.log(users);
+    // LOG console.log(users);
     io.emit('updateUserList', users);
     console.log('User disconnected');
   });

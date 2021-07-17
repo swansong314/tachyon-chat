@@ -76,7 +76,7 @@ export class ChatComponent implements OnInit {
     this.text = '';
     this.messages.push(newMessage);
     if (this.isPrivate === false) {
-      // console.log(newMessage);
+      //LOG console.log(newMessage);
       this.messagingService.sendMessage(newMessage);
     } else {
       this.messagingService.sendPrivateMessage(newMessage, this.toUser);
@@ -91,7 +91,7 @@ export class ChatComponent implements OnInit {
     // console.log(this.toUser);
     this.messagingService.getPrivateMessages(user).subscribe((messages) => {
       this.messages = messages;
-      console.log(this.messages);
+      //LOG console.log(this.messages);
     });
     // this.messages = [];
   }

@@ -12,6 +12,12 @@
   // opacity: 0.95  ;
 }
 
+@media (max-width: 768px) {
+  .container {
+    margin: 0%;
+    width: 100%;
+  }
+}
 mat-card-header {
   background-color: #1c2025;
 }

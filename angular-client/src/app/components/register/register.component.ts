@@ -34,11 +34,11 @@ export class RegisterComponent implements OnInit {
 
   getPasswordError() {
     if (this.passwordControl.hasError('required')) {
-      console.log(this.passwordControl);
+      //LOG console.log(this.passwordControl);
       return 'A password must be entered.';
     }
     if (this.passwordControl.hasError('minlength')) {
-      console.log(this.passwordControl);
+      //LOG console.log(this.passwordControl);
       return 'The password should be atleast 8 characters long.';
     }
     return '';
