@@ -19,8 +19,6 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![MIT License][license-shield]][license-url]
-
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
 <!-- PROJECT LOGO -->
@@ -105,7 +103,7 @@ Follow these instructions to set up the project locally
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+You will need to install the latest version of npm, which will then install all the dependancies for you
 
 - npm
   ```sh
