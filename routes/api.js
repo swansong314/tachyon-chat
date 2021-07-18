@@ -5,7 +5,6 @@ const Chat = require('../models/chat');
 const Room = require('../models/room');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
-const { usersOnline } = require('../users');
 
 function verifyToken(req, res, next) {
   if (!req.headers.authorization) {
