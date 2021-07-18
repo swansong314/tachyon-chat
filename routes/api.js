@@ -31,8 +31,8 @@ router.post('/register', (req, res) => {
   const userData = req.body;
   const user = new User(userData);
   //LOG console.log(user);
-  Chat.find({ username: user.username }, (erorr, users) => {
-    if (user) {
+  Chat.find({ username: user.username }, (erorr, existingUser) => {
+    if (existingUser) {
       res.status(409).send('User already exists!');
     } else {
       user.save((err, registeredUser) => {

@@ -37,6 +37,8 @@ export class MessagingService {
   toUser: any = { username: '', userID: '' };
   constructor(private http: HttpClient, private auth: AuthService) {}
 
+  myVariable = 'Hello';
+
   establishSocketConnection() {
     //LOG console.log(baseUrl);
     let username = this.auth.username;

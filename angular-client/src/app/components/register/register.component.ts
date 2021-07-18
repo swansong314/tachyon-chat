@@ -49,7 +49,6 @@ export class RegisterComponent implements OnInit {
       username: this.username,
       password: this.password,
     };
-
     this.auth.registerUser(newUser).subscribe(
       (res) => {
         console.log(res);
