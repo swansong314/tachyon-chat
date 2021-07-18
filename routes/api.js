@@ -28,12 +28,13 @@ router.get('/', (req, res) => {
 
 router.post('/register', (req, res) => {
   const userData = req.body;
-  const user = new User(userData);
   //LOG console.log(user);
-  Chat.find({ username: user.username }, (erorr, existingUser) => {
+  User.findOne({ username: userData.username }, (erorr, existingUser) => {
+    console.log(existingUser);
     if (existingUser) {
       res.status(409).send('User already exists!');
     } else {
+      const user = new User(userData);
       user.save((err, registeredUser) => {
         if (err) {
           console.error(err);
